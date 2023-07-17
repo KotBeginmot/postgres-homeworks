@@ -1,14 +1,23 @@
 -- Напишите запросы, которые выводят следующую информацию:
--- 1. "имя контакта" и "город" (contact_name, country) из таблицы customers (только эти две колонки)
-SELECT ...
+-- 1. заказы, доставленные в страны France, Germany, Spain (таблица orders, колонка ship_country)
+SELECT *
+FROM orders
+WHERE ship_country IN ('France', 'Germany', 'Spain')
+-- 2. уникальные города и страны, куда отправлялись заказы, отсортировать по странам и городам (таблица orders, колонки ship_country, ship_city)
+SELECT DISTINCT ship_country, ship_city
+from orders
 
--- 2. идентификатор заказа и разницу между датами формирования (order_date) заказа и его отгрузкой (shipped_date) из таблицы orders
+-- 3. сколько дней в среднем уходит на доставку товара в Германию (таблица orders, колонки order_date, shipped_date, ship_country)
+SELECT AVG(shipped_date - order_date)
+FROM orders
+WHERE ship_country IN ('Germany')
 
+-- 4. минимальную и максимальную цену среди продуктов, не снятых с продажи (таблица products, колонки unit_price, discontinued не равно 1)
+SELECT MIN(unit_price), MAX(unit_price)
+FROM products
+WHERE discontinued <> 1
 
--- 3. все города без повторов, в которых зарегистрированы заказчики (customers)
-
-
--- 4. количество заказов (таблица orders)
-
-
--- 5. количество стран, в которые отгружался товар (таблица orders, колонка ship_country)
+-- 5. минимальную и максимальную цену среди продуктов, не снятых с продажи и которых имеется не меньше 20 (таблица products, колонки unit_price, units_in_stock, discontinued не равно 1)
+SELECT MIN(unit_price), MAX(unit_price)
+FROM products
+WHERE units_in_stock > 20 AND discontinued <> 1
